@@ -15,11 +15,30 @@ export interface PlanetType{
     url: string;
 }
 
-export interface receivedPlanetObj{
+export interface ReceivedPlanetObj{
     count: string;
     next: string;
     previous: string;
     results: PlanetType[];
+}
+
+export interface PlanetResidentType{
+    name: string;
+    height: string;
+    mass: string;
+    hair_color: string;
+    skin_color: string;
+    eye_color: string;
+    birth_year: string;
+    gender: string;
+    homeworld: string;
+    films: string[];
+    species: string[];
+    vehicles: string[];
+    starships: string[];
+    created: string;
+    edited: string;
+    url: string;
 }
 
 
