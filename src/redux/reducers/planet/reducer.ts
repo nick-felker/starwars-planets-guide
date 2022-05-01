@@ -4,18 +4,15 @@ import { PlanetType } from "../../../types";
 
 const initialState:PlanetStateType = {
     showPlanetDetailsFlag: false,
+    planetId: '',   
 }
 
-
-interface ChangePlanetRequestType{
-    detailPlanetRequest: string;
-}
 
 interface ChangePlanetDetailsFlagType{
     showPlanetDetailsFlag: boolean;   
 }
 
-interface changePlanetsDataType{
+interface ChangePlanetsDataType{
     planetsData: PlanetType[];
 }
 
@@ -24,18 +21,21 @@ export const planetReducer = createSlice({
     name: 'Planet',
     initialState,
     reducers: {
-        changePlanetRequest: (state, {payload}: PayloadAction<ChangePlanetRequestType>) => {
+        changePlanetDetailsFlag: (state, {payload}: PayloadAction<ChangePlanetDetailsFlagType> ) => {
             return {...state, ...payload};
         },
-        changeShowPlanetDetailsFlag: (state, {payload}: PayloadAction<ChangePlanetDetailsFlagType> ) => {
+        changePlanetsData: (state, {payload}: PayloadAction<ChangePlanetsDataType> ) => {
             return {...state, ...payload};
         },
-        changePlanetsData: (state, {payload}: PayloadAction<PlanetType> ) => {
+        changeCurrentPlanetData: (state, {payload}) => {
+            state.currentPlanetData = payload;
+        },
+        changePlanetId: (state, {payload}) => {
             return {...state, ...payload};
         },
     }
 })
 
 
-export const { changePlanetRequest, changePlanetsData, changeShowPlanetDetailsFlag } = planetReducer.actions;
+export const { changePlanetsData, changePlanetDetailsFlag, changeCurrentPlanetData } = planetReducer.actions;
 export default planetReducer.reducer;

@@ -110,7 +110,20 @@ export interface VehicleType{
 }
 
 export interface PlanetStateType{
-    detailPlanetRequest?: string;
     planetsData?: PlanetType[];
     showPlanetDetailsFlag: boolean;
+    currentPlanetData?: PlanetType;
+    planetId: string;
+}
+
+
+export interface PeopleArrTypeData{
+    peopleData: PeopleType[];
+    planetId: string; 
+}
+
+export interface PeopleStateType{
+    womenDisplayFlag: boolean;
+    menDisplayFlag: boolean;
+    peopleDataArr: PeopleArrTypeData[];
 }
