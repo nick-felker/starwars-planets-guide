@@ -118,7 +118,7 @@ export interface PlanetStateType{
 
 
 export interface PeopleArrTypeData{
-    peopleData: PeopleType[];
+    peopleData: PeopleType;
     planetId: string; 
 }
 

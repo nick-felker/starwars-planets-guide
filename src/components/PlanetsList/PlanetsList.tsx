@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from "../../hooks";
-import { changePlanetsData, selectPlanetsData, changePlanetDetailsFlag, changeCurrentPlanetData, changePeopleData } from '../../redux';
+import { changePlanetsData, selectPlanetsData, changePlanetDetailsFlag, changeCurrentPlanetData, changePeopleData, changePlanetId } from '../../redux';
 import { PlanetType } from '../../types';
 
 interface Props{
@@ -11,22 +11,21 @@ interface Props{
 
 
 function PlanetsList(props: Props){
-    const [planetId, setPlanetId] = useState<string>();
+    
     const dispatch = useAppDispatch();
     const planetsData = useAppSelector(selectPlanetsData);
 
     function goToPlanetDetails(planetUrl:string, planetId:string){
         dispatch(changePlanetDetailsFlag({showPlanetDetailsFlag: true}));
-        setPlanetId(planetId);
+        dispatch(changePlanetId({planetId,}))
         fetch(planetUrl)
                 .then(response =>{
                     if (response.ok){
                         response.text().then(data =>{
-                            dispatch(changeCurrentPlanetData(JSON.parse(data)))
+                            dispatch(changeCurrentPlanetData(JSON.parse(data)));
                         })
                     }
                 })
-        
     }
 
 

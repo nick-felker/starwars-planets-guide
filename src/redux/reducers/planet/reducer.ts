@@ -37,5 +37,5 @@ export const planetReducer = createSlice({
 })
 
 
-export const { changePlanetsData, changePlanetDetailsFlag, changeCurrentPlanetData } = planetReducer.actions;
+export const { changePlanetsData, changePlanetDetailsFlag, changeCurrentPlanetData, changePlanetId } = planetReducer.actions;
 export default planetReducer.reducer;

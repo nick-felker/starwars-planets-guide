@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { selectPlanetDetailsShowFlag, changePlanetDetailsFlag, changeCurrentPlanetData } from '../../redux';
+import { selectPlanetDetailsShowFlag, changePlanetDetailsFlag, changeCurrentPlanetData, clearPeopleData, selectPlanetId } from '../../redux';
 
 
 
@@ -13,7 +13,7 @@ function Header(props:Props){
 
     const planetDetailsFlag = useAppSelector(selectPlanetDetailsShowFlag);
     const dispatch = useAppDispatch();
-
+    const planetId = useAppSelector(selectPlanetId);
 
 
     return(
@@ -31,6 +31,7 @@ function Header(props:Props){
                     <GoToSelectPlanetButton onClick={()=>{
                         dispatch(changePlanetDetailsFlag({showPlanetDetailsFlag: false}));
                         dispatch(changeCurrentPlanetData(undefined))
+                        dispatch(clearPeopleData(planetId));
                         
                     }}>
                         Go to planets

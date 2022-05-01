@@ -13,7 +13,7 @@ interface ChangeDisplayFlagType{
 }
 
 interface ChangePeopleDataType{
-    peopleData: PeopleType[];
+    peopleData: PeopleType;
     planetId: string;
 }
 
@@ -25,15 +25,20 @@ export const peopleReducer = createSlice({
             return {...state, ...payload};
         },
         changePeopleData: (state, {payload}:PayloadAction<ChangePeopleDataType> ) => {
+            
             let buffPeopleData:PeopleArrTypeData = {
                 peopleData: payload.peopleData,
                 planetId: payload.planetId,
             };
-            state.peopleDataArr.push(buffPeopleData);
+              
+                state.peopleDataArr.push(buffPeopleData);
+        },
+        clearPeopleData: (state, {payload}: PayloadAction<string>) => { 
+            state.peopleDataArr = state.peopleDataArr.filter((elem:PeopleArrTypeData)=> elem.planetId !== payload)
         }
     }
 })
 
 
-export const { changeSexDisplayFlag, changePeopleData } = peopleReducer.actions;
+export const { changeSexDisplayFlag, changePeopleData, clearPeopleData } = peopleReducer.actions;
 export default peopleReducer.reducer;

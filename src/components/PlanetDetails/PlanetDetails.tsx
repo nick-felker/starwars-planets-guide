@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { selectCurrentPlanetData, changePeopleData, selectPeopleDataByPlanetId, selectPeopleDataArr, selectMenDisplayFlag, selectWomenDisplayFlag, selectPlanetId } from '../../redux';
+import { selectCurrentPlanetData, changePeopleData, selectPeopleDataByPlanetId, changeSexDisplayFlag ,selectPeopleDataArr, selectMenDisplayFlag, selectWomenDisplayFlag, selectPlanetId } from '../../redux';
 import { useState, useEffect } from 'react';
 import { PeopleArrTypeData, PeopleType } from '../../types';
 
@@ -15,12 +15,32 @@ function PlanetDetails(props: Props){
     const currentPlanetData = useAppSelector(selectCurrentPlanetData);
     const dispatch = useAppDispatch();
     const womenDisplayFlag = useAppSelector(selectWomenDisplayFlag);
-    const menDipsplayFlag = useAppSelector(selectMenDisplayFlag);
-    const [peopleData, setPeopleData] = useState<string[]>([]);
+    const menDisplayFlag = useAppSelector(selectMenDisplayFlag);
     const planetId = useAppSelector(selectPlanetId);
     const peopleDataArr = useAppSelector(selectPeopleDataArr);
-
     
+    useEffect(()=>{
+        if (currentPlanetData === undefined) return;
+        currentPlanetData.residents.map((elem:string)=>{
+        
+            fetch(elem)
+                .then(response => {
+                    if(response.ok){
+                        response.text().then(data =>{
+                            
+                            
+                            if (peopleDataArr.includes({peopleData: JSON.parse(data), planetId: planetId})){
+                                return;
+                            }
+                            else{
+                                dispatch(changePeopleData({peopleData: JSON.parse(data), planetId,}))
+                            }
+                            
+                        })
+                    }
+                })
+        })
+    }, [currentPlanetData])
     
     
 
@@ -109,15 +129,22 @@ function PlanetDetails(props: Props){
                                 Residents
                             </CardTitle>
                             <FilterButtonsRow>
-                                <SexFilterButton>
+                                <SexFilterButton onClick={()=>dispatch(changeSexDisplayFlag({menDisplayFlag: !menDisplayFlag}))}>
                                     Filter men
+                                    <h6>{menDisplayFlag + ''}</h6>
                                 </SexFilterButton>
-                                <SexFilterButton>
+                                <SexFilterButton onClick={()=>dispatch(changeSexDisplayFlag({womenDisplayFlag: !womenDisplayFlag}))}>
                                     Filter women
+                                    <h6>{womenDisplayFlag + ''}</h6>
                                 </SexFilterButton>
                             </FilterButtonsRow>
                             <CardSubTitle>
                                {
+                                   
+                                    peopleDataArr.map((elem:PeopleArrTypeData)=>{
+                                        if(elem.peopleData.gender === 'female' && womenDisplayFlag === true) return <p>{elem.peopleData.name}</p>
+                                        if(elem.peopleData.gender === 'male' && menDisplayFlag === true) return <p>{elem.peopleData.name}</p>
+                                    })
                                }
                             </CardSubTitle>
                         </Card>
@@ -163,6 +190,7 @@ const Wrapper = styled.div`
 const ExternalPlanetDetailsWrapper = styled.div`
     max-width: 60%;
     margin: 0 auto;
+    padding-bottom: 2%;
 `
 const Card = styled.div`
     display: flex;
