@@ -1,6 +1,13 @@
 import styled from "styled-components";
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { selectCurrentPlanetData, changePeopleData, selectPeopleDataByPlanetId, changeSexDisplayFlag ,selectPeopleDataArr, selectMenDisplayFlag, selectWomenDisplayFlag, selectPlanetId } from '../../redux';
+import {    selectCurrentPlanetData, 
+            changePeopleData, 
+            changeSexDisplayFlag, 
+            selectPeopleDataArr, 
+            selectMenDisplayFlag, 
+            selectWomenDisplayFlag, 
+            selectPlanetId 
+        } from '../../redux';
 import { useState, useEffect } from 'react';
 import { PeopleArrTypeData, PeopleType } from '../../types';
 
@@ -22,17 +29,11 @@ function PlanetDetails(props: Props){
     useEffect(()=>{
         if (currentPlanetData === undefined) return;
         currentPlanetData.residents.map((elem:string)=>{
-        
             fetch(elem)
                 .then(response => {
                     if(response.ok){
                         response.text().then(data =>{
-                            
-                            
-                            
-                                dispatch(changePeopleData({peopleData: JSON.parse(data), planetId,}))
-                            
-                            
+                            dispatch(changePeopleData({peopleData: JSON.parse(data), planetId,}));
                         })
                     }
                 })
@@ -40,10 +41,29 @@ function PlanetDetails(props: Props){
     }, [currentPlanetData])
     
     
+    interface PeopleDetailsInfoProps{
+        elem: PeopleArrTypeData;
+    }
 
+    function PeopleDetailsInfo(props:PeopleDetailsInfoProps){
+        return(
+            <PeopleDetailsCard>
+                <p>Name - {props.elem.peopleData.name}</p>
+                    <p>Birth year - {props.elem.peopleData.birth_year}</p>
+                    <p>Gender - {props.elem.peopleData.gender}</p>
+                    <p>Height - {props.elem.peopleData.height}</p>
+                    <p>Skin color - {props.elem.peopleData.skin_color}</p>
+                    <p>Hair color - {props.elem.peopleData.hair_color}</p>
+                    <p>Mass - {props.elem.peopleData.mass}</p>
+            </PeopleDetailsCard>
+        )
+    }
 
-    
-    function PlanetWrapper(){
+    interface PlanetWrapperProps{
+
+    }
+
+    function PlanetWrapper(props:PlanetWrapperProps){
     
         return(
             <>
@@ -135,42 +155,24 @@ function PlanetDetails(props: Props){
                                     <h6>{womenDisplayFlag + ''}</h6>
                                 </SexFilterButton>
                             </FilterButtonsRow>
+                                {peopleDataArr.length !== currentPlanetData?.residents.length ? <p>loading</p> : null}
                             <CardSubTitle>
-                               {
-                                   
+                               {   
                                     peopleDataArr.map((elem:PeopleArrTypeData)=>{
+
                                         if(elem.peopleData.gender === 'female' && womenDisplayFlag === true){
-                                        return(
-                                            <PeopleDetailsCard>
-                                                <p>Name - {elem.peopleData.name}</p>
-                                                    <p>Birth year - {elem.peopleData.birth_year}</p>
-                                                    <p>Gender - {elem.peopleData.gender}</p>
-                                                    <p>Height - {elem.peopleData.height}</p>
-                                                    <p>Skin color - {elem.peopleData.skin_color}</p>
-                                                    <p>Hair color - {elem.peopleData.hair_color}</p>
-                                                    <p>Mass - {elem.peopleData.mass}</p>
-                                            </PeopleDetailsCard>
-                                        )
+                                            return <PeopleDetailsInfo elem={elem}/>
                                     }
                                         if(elem.peopleData.gender === 'male' && menDisplayFlag === true){
-                                            return(
-                                                <PeopleDetailsCard>
-                                                    <p>Name - {elem.peopleData.name}</p>
-                                                    <p>Birth year - {elem.peopleData.birth_year}</p>
-                                                    <p>Gender - {elem.peopleData.gender}</p>
-                                                    <p>Height - {elem.peopleData.height}</p>
-                                                    <p>Skin color - {elem.peopleData.skin_color}</p>
-                                                    <p>Hair color - {elem.peopleData.hair_color}</p>
-                                                    <p>Mass - {elem.peopleData.mass}</p>
-                                                </PeopleDetailsCard>
-                                            )
+                                           return <PeopleDetailsInfo elem={elem}/>
+                                        }
+                                        if(elem.peopleData.gender === 'n/a'){
+                                           return <PeopleDetailsInfo elem={elem}/>
                                         }
                                     })
                                }
                             </CardSubTitle>
                         </Card>
-
-
                     </Wrapper>
                 </ExternalPlanetDetailsWrapper>
             </>
@@ -211,13 +213,11 @@ const Wrapper = styled.div`
 const PeopleDetailsCard = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
-    background-color: gray;
+    
+    text-align: left;
+    background-color: #f6f6f6;
+    border-radius: 5px;
     margin-bottom: 40px;
-`
-
-const DetailPeopleInfo = styled.p`
-    color: #0969da;
 `
 
 const ExternalPlanetDetailsWrapper = styled.div`

@@ -1,7 +1,13 @@
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import {useDispatch} from 'react-redux'
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { selectPlanetDetailsShowFlag, changePlanetDetailsFlag, changeCurrentPlanetData, clearPeopleData, selectPlanetId } from '../../redux';
+import {    selectPlanetDetailsShowFlag,
+            changePlanetDetailsFlag,
+            changeCurrentPlanetData, 
+            clearPeopleData, 
+            selectPlanetId,
+            changeSexDisplayFlag,
+        } from '../../redux';
 
 
 
@@ -32,6 +38,7 @@ function Header(props:Props){
                         dispatch(changePlanetDetailsFlag({showPlanetDetailsFlag: false}));
                         dispatch(changeCurrentPlanetData(undefined))
                         dispatch(clearPeopleData(planetId));
+                        dispatch(changeSexDisplayFlag({womenDisplayFlag: true, menDisplayFlag: true}))
                         
                     }}>
                         Go to planets
