@@ -29,12 +29,9 @@ function PlanetDetails(props: Props){
                         response.text().then(data =>{
                             
                             
-                            if (peopleDataArr.includes({peopleData: JSON.parse(data), planetId: planetId})){
-                                return;
-                            }
-                            else{
+                            
                                 dispatch(changePeopleData({peopleData: JSON.parse(data), planetId,}))
-                            }
+                            
                             
                         })
                     }
@@ -126,7 +123,7 @@ function PlanetDetails(props: Props){
                         </Card>
                         <Card>
                             <CardTitle>
-                                Residents
+                                Residents - {currentPlanetData?.residents.length}
                             </CardTitle>
                             <FilterButtonsRow>
                                 <SexFilterButton onClick={()=>dispatch(changeSexDisplayFlag({menDisplayFlag: !menDisplayFlag}))}>
@@ -142,8 +139,32 @@ function PlanetDetails(props: Props){
                                {
                                    
                                     peopleDataArr.map((elem:PeopleArrTypeData)=>{
-                                        if(elem.peopleData.gender === 'female' && womenDisplayFlag === true) return <p>{elem.peopleData.name}</p>
-                                        if(elem.peopleData.gender === 'male' && menDisplayFlag === true) return <p>{elem.peopleData.name}</p>
+                                        if(elem.peopleData.gender === 'female' && womenDisplayFlag === true){
+                                        return(
+                                            <PeopleDetailsCard>
+                                                <p>Name - {elem.peopleData.name}</p>
+                                                    <p>Birth year - {elem.peopleData.birth_year}</p>
+                                                    <p>Gender - {elem.peopleData.gender}</p>
+                                                    <p>Height - {elem.peopleData.height}</p>
+                                                    <p>Skin color - {elem.peopleData.skin_color}</p>
+                                                    <p>Hair color - {elem.peopleData.hair_color}</p>
+                                                    <p>Mass - {elem.peopleData.mass}</p>
+                                            </PeopleDetailsCard>
+                                        )
+                                    }
+                                        if(elem.peopleData.gender === 'male' && menDisplayFlag === true){
+                                            return(
+                                                <PeopleDetailsCard>
+                                                    <p>Name - {elem.peopleData.name}</p>
+                                                    <p>Birth year - {elem.peopleData.birth_year}</p>
+                                                    <p>Gender - {elem.peopleData.gender}</p>
+                                                    <p>Height - {elem.peopleData.height}</p>
+                                                    <p>Skin color - {elem.peopleData.skin_color}</p>
+                                                    <p>Hair color - {elem.peopleData.hair_color}</p>
+                                                    <p>Mass - {elem.peopleData.mass}</p>
+                                                </PeopleDetailsCard>
+                                            )
+                                        }
                                     })
                                }
                             </CardSubTitle>
@@ -185,6 +206,18 @@ const Wrapper = styled.div`
     flex-wrap: wrap;
     
     
+`
+
+const PeopleDetailsCard = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: gray;
+    margin-bottom: 40px;
+`
+
+const DetailPeopleInfo = styled.p`
+    color: #0969da;
 `
 
 const ExternalPlanetDetailsWrapper = styled.div`

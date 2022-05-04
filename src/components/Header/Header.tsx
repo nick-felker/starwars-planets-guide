@@ -21,7 +21,7 @@ function Header(props:Props){
             <Wrapper>
                 
                 <Title>
-                    Solar Wars Road map
+                    StarWars Road map
                     
                 </Title>
                 {
